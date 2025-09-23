@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ profile.user.get_full_name }}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0ea5e9',
+                        secondary: '#7e22ce',
+                        dark: '#0f172a',
+                        darker: '#020617',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-dark text-slate-200">
+    {% if messages %}
+    <div id="message-container" class="fixed top-24 left-1/2 -translate-x-1/2 z-[60] w-auto max-w-md px-4">
+        {% for message in messages %}
+        <div class="flex items-center p-4 mb-4 text-sm rounded-lg shadow-lg
+            {% if 'success' in message.tags %} bg-green-800 text-green-200 {% endif %}
+            {% if 'error' in message.tags %} bg-red-800 text-red-200 {% endif %}"
+            role="alert">
+            {% if 'success' in message.tags %}<i class="fas fa-check-circle mr-3"></i>{% endif %}
+            {% if 'error' in message.tags %}<i class="fas fa-exclamation-circle mr-3"></i>{% endif %}
+            <div class="flex-grow">{{ message }}</div>
+            <button type="button" class="ml-4 -mx-1.5 -my-1.5 bg-transparent text-current rounded-lg p-1.5 inline-flex h-8 w-8 hover:bg-white/10" onclick="this.closest('[role=alert]').remove()">
+                <span class="sr-only">Close</span>
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Navigation -->
+    <nav class="fixed w-full bg-darker/80 backdrop-blur-sm z-50 shadow-lg">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <a href="#" class="text-2xl font-bold gradient-text">Portfolio</a>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button id="menu-toggle" class="text-slate-200 hover:text-primary focus:outline-none">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="#home" class="nav-link active">Home</a>
+                    <a href="#about" class="nav-link">About</a>
+                    <a href="#skills" class="nav-link">Skills</a>
+                    <a href="#projects" class="nav-link">Projects</a>
+                    <a href="#contact" class="nav-link">Contact</a>
+                </div>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden md:hidden mt-4 pb-2">
+                <a href="#home" class="block py-2 nav-link active">Home</a>
+                <a href="#about" class="block py-2 nav-link">About</a>
+                <a href="#skills" class="block py-2 nav-link">Skills</a>
+                <a href="#projects" class="block py-2 nav-link">Projects</a>
+                <a href="#contact" class="block py-2 nav-link">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="min-h-screen flex items-center pt-20">
+        <div class="container mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
+            <div class="md:w-1/2 mb-12 md:mb-0">
+                <h1 class="text-4xl md:text-6xl font-bold mb-4">Hi, I'm <span
+                        class="gradient-text">{{ profile.user.first_name }}</span></h1>
+                <h2 class="text-2xl md:text-3xl font-semibold mb-6 text-slate-300">{{ profile.designation }}</h2>
+                <p class="text-lg mb-8 text-slate-400 max-w-lg">
+                    {{ profile.description }}
+                </p>
+                <div class="flex space-x-4">
+                    <a href="#contact" class="px-6 py-3 rounded-full btn-primary font-medium">Hire Me</a>
+                    <a href="#projects"
+                        class="px-6 py-3 rounded-full border border-primary text-primary font-medium hover:bg-primary/10 transition">View
+                        Work</a>
+                </div>
+                <div class="flex mt-8 space-x-4">
+                    <a href="{{ profile.github }}"
+                        class="social-icon text-xl w-10 h-10 flex items-center justify-center rounded-full bg-slate-800 hover:bg-primary" target="_blank">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="{{ profile.linkedin }}"
+                        class="social-icon text-xl w-10 h-10 flex items-center justify-center rounded-full bg-slate-800 hover:bg-blue-600" target="_blank">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="{{ profile.instagram }}"
+                        class="social-icon text-xl w-10 h-10 flex items-center justify-center rounded-full bg-slate-800 hover:bg-blue-400" target="_blank">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="{{ profile.facebook }}"
+                        class="social-icon text-xl w-10 h-10 flex items-center justify-center rounded-full bg-slate-800 hover:bg-blue-400" target="_blank">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="md:w-1/2 flex justify-center">
+                <div class="relative w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96">
+                    <div
+                        class="absolute inset-0 rounded-full bg-gradient-to-br from-primary to-secondary blur-xl opacity-20">
+                    </div>
+                    <img src="{{ profile.image1.url }}" alt="Profile"
+                        class="relative w-full h-full object-cover rounded-full border-4 border-slate-800 floating">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-darker">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">About <span class="gradient-text">Me</span></h2>
+                <div class="w-20 h-1 bg-gradient-to-r from-primary to-secondary mx-auto"></div>
+            </div>
+
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/3 mb-8 md:mb-0 flex justify-center">
+                    <div class="relative w-64 h-64">
+                        <div
+                            class="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary to-secondary blur-xl opacity-20">
+                        </div>
+                        <img src="{{ profile.image2.url }}" alt="About"
+                            class="relative w-full h-full object-cover rounded-2xl border-4 border-slate-800">
+                    </div>
+                </div>
+
+                <div class="md:w-2/3 md:pl-12">
+                    <h3 class="text-2xl font-bold mb-6">Who am I?</h3>
+                    <p class="text-slate-400 mb-6">{{ profile.about_me }}</p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                        <div>
+                            <h4 class="font-semibold mb-2">Name: <span class="text-slate-300">{{ profile.user.get_full_name }}</span>
+                            </h4>
+                            <h4 class="font-semibold mb-2">Email: <span
+                                    class="text-slate-300">{{ profile.user.email }}</span>
+                            </h4>
+                            <h4 class="font-semibold mb-2">Phone: <span class="text-slate-300">{{ profile.phone }}</span>
+                            </h4>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold mb-2">Experience: <span class="text-slate-300">{{ profile.experience }}</span></h4>
+                            <h4 class="font-semibold mb-2">Location: <span class="text-slate-300">{{ profile.location }}</span></h4>
+                        </div>
+                    </div>
+
+                    <div class="flex space-x-4">
+                        <a href="{{ profile.cv.url }}" target="_blank" class="px-6 py-3 rounded-full btn-primary font-medium">Download CV</a>
+                        <a href="#contact"
+                            class="px-6 py-3 rounded-full border border-primary text-primary font-medium hover:bg-primary/10 transition">Contact
+                            Me</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Experience Timeline -->
+            <div class="mt-20">
+                <h3 class="text-2xl font-bold mb-8 text-center">My <span class="gradient-text">Experience</span></h3>
+
+                <div class="relative max-w-3xl mx-auto">
+                    {% for experience in profile.experiences.all %}
+                    <div class="timeline-item">
+                        <div class="p-4 bg-slate-800 rounded-lg shadow-lg">
+                            <h4 class="text-lg font-bold mb-2">{{ experience.name }}</h4>
+                            <p class="text-sm text-slate-400 mb-2">{{ experience.company }}</p>
+                            <p class="text-slate-300">{{ experience.description }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-20 bg-dark">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">My <span class="gradient-text">Skills</span></h2>
+                <div class="w-20 h-1 bg-gradient-to-r from-primary to-secondary mx-auto"></div>
+            </div>
+
+            <div class="max-w-4xl mx-auto">
+                <div class="space-y-6">
+                    {% for skill in profile.skills.all %}
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <span class="font-medium">{{ skill.name }}</span>
+                            <span>{{ skill.percentage }}%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: {{ skill.percentage }}%"></div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Tools & Technologies -->
+            <div class="mt-16">
+                <h3 class="text-2xl font-bold mb-8 text-center">Tools & <span class="gradient-text">Technologies</span>
+                </h3>
+
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+                    {% for tool in profile.tools.all %}
+                    <div class="flex flex-col items-center p-6 bg-slate-800 rounded-lg card-hover">
+                        <img src="{{ tool.image.url }}" alt="{{ tool.name }}" class="h-10 w-10 mb-2 object-contain">
+                        <span>{{ tool.name }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+     
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-20 bg-darker">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">My <span class="gradient-text">Projects</span></h2>
+                <div class="w-20 h-1 bg-gradient-to-r from-primary to-secondary mx-auto"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {% for project in profile.projects.all %}
+                <div class="project-card rounded-xl overflow-hidden card-hover">
+                    <div class="h-48 overflow-hidden">
+                        <img src="{{ project.image.url }}"
+                            alt="{{ project.name }}" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">{{ project.name }}</h3>
+                        <p class="text-slate-400 mb-4">{{ project.description }}</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            {% for pt in project.projecttechnology_set.all %}
+                            <span class="px-3 py-1 bg-slate-700 rounded-full text-sm">{{ pt.technology.name }}</span>
+                            {% endfor %}
+                        </div>
+                        <div class="flex space-x-3">
+                            <a href="{{ project.live_link }}" target="_blank" class="text-primary hover:text-secondary">
+                                <i class="fas fa-external-link-alt"></i> Live Demo
+                            </a>
+                            <a href="{{ project.github_link }}" target="_blank" class="text-primary hover:text-secondary">
+                                <i class="fab fa-github"></i> Code
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+
+    <section id="contact" class="py-20 bg-dark">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Contact <span class="gradient-text">Me</span></h2>
+                <div class="w-20 h-1 bg-gradient-to-r from-primary to-secondary mx-auto mb-4"></div>
+                <p class="text-slate-400 max-w-2xl mx-auto">
+                    {{ profile.contact_description }}
+                </p>
+            </div>
+
+            <div class="flex flex-col md:flex-row gap-12 max-w-4xl mx-auto">
+                <!-- Contact Info -->
+                <div class="md:w-1/3">
+                    <div class="space-y-6">
+                        <div class="flex items-start space-x-4">
+                            <div
+                                class="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center text-primary text-xl">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-lg">Location</h4>
+                                <p class="text-slate-400">{{ profile.location }}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4">
+                            <div
+                                class="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center text-primary text-xl">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-lg">Email</h4>
+                                <p class="text-slate-400">{{ profile.user.email }}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4">
+                            <div
+                                class="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center text-primary text-xl">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-lg">Phone</h4>
+                                <p class="text-slate-400">{{ profile.phone }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Form -->
+                <div class="md:w-2/3">
+                    <form action="#" method="POST" class="space-y-6">
+                        {% csrf_token %}
+                        <div class="flex flex-col md:flex-row gap-6">
+                            <input type="text" name="name" placeholder="Your Name"
+                                class="w-full p-3 rounded-lg contact-input focus:outline-none" required>
+                            <input type="email" name="email" placeholder="Your Email"
+                                class="w-full p-3 rounded-lg contact-input focus:outline-none" required>
+                        </div>
+                        <div>
+                            <input type="text" name="subject" placeholder="Subject"
+                                class="w-full p-3 rounded-lg contact-input focus:outline-none" required>
+                        </div>
+                        <div>
+                            <textarea name="message" placeholder="Your Message" rows="5"
+                                class="w-full p-3 rounded-lg contact-input focus:outline-none" required></textarea>
+                        </div>
+                        <button type="submit" class="px-8 py-3 rounded-full btn-primary font-medium">Send
+                            Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-darker py-12">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <a href="#" class="text-2xl font-bold gradient-text">Portfolio</a>
+                    <p class="text-slate-400 mt-2">© {% now "Y" %} {{ profile.user.get_full_name }}. All rights reserved.</p>
+                </div>
+
+                <div class="flex space-x-6">
+                    <a href="{{ profile.github }}" target="_blank" class="text-slate-400 hover:text-primary transition">
+                        <i class="fab fa-github text-xl"></i>
+                    </a>
+                    <a href="{{ profile.linkedin }}" target="_blank" class="text-slate-400 hover:text-blue-600 transition">
+                        <i class="fab fa-linkedin-in text-xl"></i>
+                    </a>
+                    <a href="{{ profile.instagram }}" target="_blank" class="text-slate-400 hover:text-blue-400 transition">
+                        <i class="fab fa-instagram text-xl"></i>
+                    </a>
+                    <a href="{{ profile.facebook }}" target="_blank" class="text-slate-400 hover:text-pink-600 transition">
+                        <i class="fab fa-facebook text-xl"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="border-t border-slate-800 mt-8 pt-8 text-center text-slate-500">
+                <p>Made with <i class="fas fa-heart text-red-500"></i> and lots of <i
+                        class="fas fa-coffee text-amber-500"></i></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top"
+        class="fixed bottom-8 right-8 w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white shadow-lg hidden">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+    <script src="{% static 'js/script.js' %}"></script>
+    <script>
+        // Auto-hide messages after 5 seconds
+        const messageContainer = document.getElementById('message-container');
+        if (messageContainer) {
+            setTimeout(() => {
+                const alerts = messageContainer.querySelectorAll('[role=alert]');
+                alerts.forEach(alert => {
+                    alert.style.transition = 'opacity 0.5s ease';
+                    alert.style.opacity = '0';
+                    setTimeout(() => alert.remove(), 500);
+                });
+            }, 5000);
+        }
+    </script>
+</body>
+
+</html>
