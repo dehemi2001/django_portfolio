@@ -42,17 +42,12 @@ class CustomUserAdmin(BaseUserAdmin):
             return list()
         return super(CustomUserAdmin, self).get_inline_instances(request, obj)
 
-@admin.register(UserProfile)
-class UserProfileAdmin(admin.ModelAdmin):
-    search_fields = ('user__username',)
-
 @admin.register(Experience)
 class ExperienceAdmin(admin.ModelAdmin):
     list_display = ('name', 'company', 'user_profile', 'order')
     list_editable = ('order',)
     list_filter = ('user_profile',)
     search_fields = ('name', 'company', 'user_profile__user__username')
-    autocomplete_fields = ('user_profile',)
 
 @admin.register(Skill)
 class SkillAdmin(admin.ModelAdmin):
@@ -60,7 +55,6 @@ class SkillAdmin(admin.ModelAdmin):
     list_editable = ('order',)
     list_filter = ('user_profile',)
     search_fields = ('name', 'user_profile__user__username')
-    autocomplete_fields = ('user_profile',)
 
 @admin.register(Tool)
 class ToolAdmin(admin.ModelAdmin):
@@ -68,7 +62,6 @@ class ToolAdmin(admin.ModelAdmin):
     list_editable = ('order',)
     list_filter = ('user_profile',)
     search_fields = ('name', 'user_profile__user__username')
-    autocomplete_fields = ('user_profile',)
 
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
